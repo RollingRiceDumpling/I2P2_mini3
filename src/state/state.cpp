@@ -13,7 +13,21 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  return 0;
+  static const int piece_value[7] = {0, 2, 6, 7, 8, 20, 100};
+  int value = 0;
+  for(int i=0 ; i< BOARD_H ; i++) {
+    for(int j=0 ; j<BOARD_W ; j++) {
+      int now_piece = this->board.board[1-this->player][i][j];
+      if(now_piece) {
+        value += piece_value[now_piece];
+      }
+      now_piece = this->board.board[this->player][i][j];
+      if(now_piece) {
+        value -= piece_value[now_piece];
+      }
+    }
+  }
+  return value;
 }
 
 
@@ -212,10 +226,10 @@ void State::get_legal_actions(){
 }
 
 
-const char piece_table[2][7][5] = {
-  {" ", "♙", "♖", "♘", "♗", "♕", "♔"},
-  {" ", "♟", "♜", "♞", "♝", "♛", "♚"}
-};
+//const char piece_table[2][7][5] = {
+//  {" ", "♙", "♖", "♘", "♗", "♕", "♔"},
+//  {" ", "♟", "♜", "♞", "♝", "♛", "♚"}
+//};
 /**
  * @brief encode the output for command line output
  * 
