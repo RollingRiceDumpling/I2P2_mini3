@@ -6,8 +6,8 @@
  * @brief Policy class for random policy, 
  * your policy class should have get_move method
  */
-class minimax{
+class alphabeta{
 public:
-  static int minimax_value(State* state, int depth, bool maximizing_player, int me);
+  static int alphabeta_value(State* state, int depth, int alpha, int beta, bool maximizing_player, int me);
   static Move get_move(State *state, int depth);
 };

@@ -1,11 +1,10 @@
 #include <cstdlib>
 #include <limits>
 #include "../state/state.hpp"
-#include "./minimax.hpp"
+#include "./alphabeta.hpp"
 
 
-
-int minimax::minimax_value(State* state, int depth, bool maximizing_player, int me) {
+int alphabeta::alphabeta_value(State* state, int depth, int alpha, int beta, bool maximizing_player, int me) {
   if (depth == 0) {
     if(state->player == me)
     return state->evaluate();
@@ -18,10 +17,13 @@ int minimax::minimax_value(State* state, int depth, bool maximizing_player, int 
 
     for (const auto& action : state->legal_actions) {
       State* next_state = state->next_state(action);
-      int val = minimax_value(next_state, depth - 1, false, me);
+      int val = alphabeta_value(next_state, depth - 1, alpha, beta, false, me);
       max_val = std::max(max_val, val);
+      alpha = std::max(alpha, val);
 
       delete next_state;
+      if (beta <= alpha)
+        break;
     }
 
     return max_val;
@@ -31,10 +33,13 @@ int minimax::minimax_value(State* state, int depth, bool maximizing_player, int 
 
     for (const auto& action : state->legal_actions) {
       State* next_state = state->next_state(action);
-      int val = minimax_value(next_state, depth - 1, true, me);
+      int val = alphabeta_value(next_state, depth - 1, alpha, beta, true, me);
       min_val = std::min(min_val, val);
+      beta = std::min(beta, val);
 
       delete next_state;
+      if (beta <= alpha)
+        break;
     }
 
     return min_val;
@@ -49,7 +54,7 @@ int minimax::minimax_value(State* state, int depth, bool maximizing_player, int 
  * @param depth You may need this for other policy
  * @return Move 
  */
-Move minimax::get_move(State *state, int depth){
+Move alphabeta::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions();
   
@@ -59,7 +64,7 @@ Move minimax::get_move(State *state, int depth){
 
   for (const auto& action : state->legal_actions) {
     State* next_state = state->next_state(action);
-    int val = minimax_value(next_state, depth - 1, false, state->player);
+    int val = alphabeta_value(next_state, depth - 1, std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), false, state->player);
 
     if (val > max_val) {
       max_val = val;
