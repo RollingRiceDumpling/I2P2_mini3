@@ -13,17 +13,17 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  static const int piece_value[7] = {0, 2, 6, 7, 8, 20, 100};
+  static const int chess_value[7] = {0, 2, 6, 7, 8, 20, 100};
   int value = 0;
   for(int i=0 ; i< BOARD_H ; i++) {
     for(int j=0 ; j<BOARD_W ; j++) {
-      int now_piece = this->board.board[1-this->player][i][j];
-      if(now_piece) {
-        value += piece_value[now_piece];
+      int block = this->board.board[this->player][i][j];
+      if(block) {
+        value += chess_value[block];
       }
-      now_piece = this->board.board[this->player][i][j];
-      if(now_piece) {
-        value -= piece_value[now_piece];
+      block = this->board.board[1 - this->player][i][j];
+      if(block) {
+        value -= chess_value[block];
       }
     }
   }
