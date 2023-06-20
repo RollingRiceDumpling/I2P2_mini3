@@ -40,13 +40,11 @@ void read_board(std::ifstream& fin) {
  */
 void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
-  int depth = 3;
   while(true) {
-      auto move = submission::get_move(root, depth);
+      auto move = submission::get_move(root, 4);
       fout << move.first.first << " " << move.first.second << " "\
            << move.second.first << " " << move.second.second << std::endl;
-      if(depth < 5)depth += 1;
-      else break;
+      break;
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
   }

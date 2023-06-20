@@ -57,7 +57,7 @@ const int wPawnTable[6][5] = {
 
 // Black's Piece-Square Tables
 const int bKingTableMid[6][5] = {
-    {  0,  0,  0,  0, 20},
+    {20, 30,  0, 30, 20},
     {  0,  0,  0,  0, 20},
     {-10,-20,-20,-20,-10},
     {-30,-40,-50,-40,-30},
@@ -121,35 +121,35 @@ int State::evaluate(){
       int op_chess = this->board.board[1 - this->player][i][j];
       value += chess_value[my_chess];   
       value -= chess_value[op_chess];   
-      //switch (my_chess)
-      //{
-      //  case 1:
-      //    if(this->player == 0) value += wPawnTable[i][j];
-      //    else value += bPawnTable[i][j];
-      //    break;
-      //  case 2:
-      //    if(this->player == 0) value += wRookTable[i][j];
-      //    else value += bRookTable[i][j];
-      //    break;
-      //  case 3:
-      //    if(this->player == 0) value += wKnightTable[i][j];
-      //    else value += bKnightTable[i][j];
-      //    break;
-      //  case 4:
-      //    if(this->player == 0) value += wBishopTable[i][j];
-      //    else value += bBishopTable[i][j];
-      //    break;
-      //  case 5:
-      //    if(this->player == 0) value += wQueenTable[i][j];
-      //    else value += bQueenTable[i][j];
-      //    break;
-      //  case 6:
-      //    if(this->player == 0) value += wKingTableMid[i][j];
-      //    else value += bKingTableMid[i][j];
-      //    break;
-      //  default:
-      //    break;
-      //}
+      switch (my_chess)
+      {
+        case 1:
+          if(this->player == 0) value += wPawnTable[i][j];
+          else value += bPawnTable[i][j];
+          break;
+        case 2:
+          if(this->player == 0) value += wRookTable[i][j];
+          else value += bRookTable[i][j];
+          break;
+        case 3:
+          if(this->player == 0) value += wKnightTable[i][j];
+          else value += bKnightTable[i][j];
+          break;
+        case 4:
+          if(this->player == 0) value += wBishopTable[i][j];
+          else value += bBishopTable[i][j];
+          break;
+        case 5:
+          if(this->player == 0) value += wQueenTable[i][j];
+          else value += bQueenTable[i][j];
+          break;
+        case 6:
+          if(this->player == 0) value += wKingTableMid[i][j];
+          else value += bKingTableMid[i][j];
+          break;
+        default:
+          break;
+      }
     }
   }
   return value;
