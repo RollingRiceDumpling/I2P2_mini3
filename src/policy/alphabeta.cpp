@@ -14,8 +14,8 @@ int alphabeta::alphabeta_value(State* state, int depth, int alpha, int beta, boo
     return transposition_table[state_key];
   }
 
-  state->get_legal_actions();
-  if (depth == 0 || !state->legal_actions.size()) {
+
+  if (depth == 0) {
     if(maximizing_player) {
       int eval = state->evaluate();
       transposition_table[state_key] = eval;
@@ -27,7 +27,7 @@ int alphabeta::alphabeta_value(State* state, int depth, int alpha, int beta, boo
       return eval;
     }
   }
-
+  state->get_legal_actions();
   if (maximizing_player) {
     int val = std::numeric_limits<int>::min();
 

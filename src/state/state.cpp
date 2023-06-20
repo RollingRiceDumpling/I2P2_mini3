@@ -6,25 +6,150 @@
 #include "../config.hpp"
 
 
+const int wKingTableMid[6][5] = {
+    {-30,-40,-50,-40,-30},
+    {-30,-40,-50,-40,-30},
+    {-30,-40,-50,-40,-30},
+    {-10,-20,-20,-20,-10},
+     { 0,  0,  0,  0,  0},
+     {20, 30,  0, 30, 20}
+};
+const int wQueenTable[6][5] = {
+    {-20,-10, -5,-10,-20},
+    {-10,  0,  0,  0,-10},
+    {-10,  0,  0,  0,-10},
+    {-10,  0,  0,  0,-10},
+    {-10,  0,  0,  0,-10},
+    {-20,-10, -5,-10,-20}
+};
+const int wRookTable[6][5] = {
+    {  0,  0,  0,  0,  0},
+    {  5, 10, 10, 10,  5},
+    { -5,  0,  0,  0, -5},
+    { -5,  0,  0,  0, -5},
+    { -5,  0,  0,  0, -5},
+    {  0,  0,  5,  0,  0}
+};
+const int wBishopTable[6][5] = {
+    {-20,-10,-10,-10,-20},
+    {-10,  0,  0,  0,-10},
+    {-10,  0, 10,  0,-10},
+    {-10, 10, 10, 10,-10},
+    {-10,  5,  0,  5,-10},
+    {-20,-10,-10,-10,-20}
+};
+const int wKnightTable[6][5] = {
+    {-50,-40,-30,-40,-50},
+    {-40,-20,  0,-20,-40},
+    {-30,  0, 15,  0,-30},
+    {-30,  5, 15,  5,-30},
+    {-40,-20,  5,-20,-40},
+    {-50,-40,-30,-40,-50}
+};
+const int wPawnTable[6][5] = {
+    {  0,  0,  0,  0,  0},
+    { 50, 50, 50, 50, 50},
+    {  5, 10, 25, 10,  5},
+    {  0,  0, 20,  0,  0},
+    { 10, 10,-20, 10, 10},
+    {  0,  0,  0,  0,  0},
+};
+
+// Black's Piece-Square Tables
+const int bKingTableMid[6][5] = {
+    {  0,  0,  0,  0, 20},
+    {  0,  0,  0,  0, 20},
+    {-10,-20,-20,-20,-10},
+    {-30,-40,-50,-40,-30},
+    {-30,-40,-50,-40,-30},
+    {-30,-40,-50,-40,-30}
+};
+
+const int bQueenTable[6][5] = {
+  {  -20,-10, -5,-10,-20},
+  {  -10,  0,  0,  0,-10},
+  {  -10,  0,  0,  0,-10},
+  {  -10,  0,  0,  0,-10},
+  {  -10,  0,  0,  0,-10},
+  {  -20,-10, -5,-10,-20}
+};
+const int bRookTable[6][5] = {
+    {  0,  0,  5,  0,  0},
+    { -5,  0,  0,  0, -5},
+    { -5, 10, 10, 10, -5},
+    { -5,  0, 20,  0, -5},
+    {  5, 10, 10, 10,  5},
+    {  0,  0,  0,  0,  0}
+};
+const int bBishopTable[6][5] = {
+    {-20,-10,-10,-10,-20},
+    {-10,  5,  5,  5,-10},
+    {-10, 10, 10, 10,-10},
+    {-10,  0, 10,  0,-10},
+    {-10,  0,  0,  0,-10},
+    {-20,-10,-10,-10,-20}
+};
+const int bKnightTable[6][5] = {
+    {-50,-40,-30,-40,-50},
+    {-40,-20,  5,-20,-40},
+    {-30,  5, 15,  5,-30},
+    {-30,  0, 15,  0,-30},
+    {-40,-20,  0,-20,-40},
+    {-50,-40,-30,-40,-50}
+};
+const int bPawnTable[6][5] = {
+    {  0,  0,  0,  0,  0},
+    {  5, 10,-20, 10,  5},
+    {  5, -5,  0, -5,  5},
+    { 10, 10, 30, 10, 10},
+    { 50, 50, 50, 50, 50},
+    { 50, 50, 50, 50, 50}
+};
+
+
 /**
  * @brief evaluate the state
  * 
  * @return int 
  */
 int State::evaluate(){
-  // [TODO] design your own evaluation function
-  static const int chess_value[7] = {0, 2, 6, 7, 8, 20, 100};
-  int value = 0;
+  static const int chess_value[7] = {0, 100, 300, 350, 400, 1000, 5000};
+  int value = 0; 
   for(int i=0 ; i< BOARD_H ; i++) {
     for(int j=0 ; j<BOARD_W ; j++) {
-      int block = this->board.board[this->player][i][j];
-      if(block) {
-        value += chess_value[block];
-      }
-      block = this->board.board[1 - this->player][i][j];
-      if(block) {
-        value -= chess_value[block];
-      }
+      int my_chess = this->board.board[this->player][i][j];
+      int op_chess = this->board.board[1 - this->player][i][j];
+      value += chess_value[my_chess];   
+      value -= chess_value[op_chess];   
+      //switch (my_chess)
+      //{
+      //  case 1:
+      //    if(this->player == 0) value += wPawnTable[i][j];
+      //    else value += bPawnTable[i][j];
+      //    break;
+      //  case 2:
+      //    if(this->player == 0) value += wRookTable[i][j];
+      //    else value += bRookTable[i][j];
+      //    break;
+      //  case 3:
+      //    if(this->player == 0) value += wKnightTable[i][j];
+      //    else value += bKnightTable[i][j];
+      //    break;
+      //  case 4:
+      //    if(this->player == 0) value += wBishopTable[i][j];
+      //    else value += bBishopTable[i][j];
+      //    break;
+      //  case 5:
+      //    if(this->player == 0) value += wQueenTable[i][j];
+      //    else value += bQueenTable[i][j];
+      //    break;
+      //  case 6:
+      //    if(this->player == 0) value += wKingTableMid[i][j];
+      //    else value += bKingTableMid[i][j];
+      //    break;
+      //  default:
+      //    break;
+      //}
     }
   }
   return value;
@@ -241,9 +366,9 @@ std::string State::encode_output(){
   for(int i=0; i<BOARD_H; i+=1){
     for(int j=0; j<BOARD_W; j+=1){
       if((now_piece = this->board.board[0][i][j])){
-        ss << std::string(piece_table[0][now_piece]);
+        ss << std::string(PIECE_TABLE[0][now_piece]);
       }else if((now_piece = this->board.board[1][i][j])){
-        ss << std::string(piece_table[1][now_piece]);
+        ss << std::string(PIECE_TABLE[1][now_piece]);
       }else{
         ss << " ";
       }
