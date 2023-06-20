@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 #include "../state/state.hpp"
 
 
@@ -8,6 +9,6 @@
  */
 class alphabeta{
 public:
-  static int alphabeta_value(State* state, int depth, int alpha, int beta, bool maximizing_player, int me);
+  static int alphabeta_value(State* state, int depth, int alpha, int beta, bool maximizing_player, std::unordered_map<std::string, int>& transposition_table);
   static Move get_move(State *state, int depth);
 };

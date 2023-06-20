@@ -6,7 +6,9 @@
 
 
 int minimax::minimax_value(State* state, int depth, bool maximizing_player, int me) {
-  if (depth == 0) {
+  state->get_legal_actions();
+
+  if (depth == 0 || !state->legal_actions.size()) {
     if(state->player == me)
     return state->evaluate();
     else return -state->evaluate();
@@ -14,7 +16,6 @@ int minimax::minimax_value(State* state, int depth, bool maximizing_player, int 
 
   if (maximizing_player) {
     int max_val = std::numeric_limits<int>::min();
-    state->get_legal_actions();
 
     for (const auto& action : state->legal_actions) {
       State* next_state = state->next_state(action);
@@ -27,7 +28,6 @@ int minimax::minimax_value(State* state, int depth, bool maximizing_player, int 
     return max_val;
   } else {
     int min_val = std::numeric_limits<int>::max();
-    state->get_legal_actions();
 
     for (const auto& action : state->legal_actions) {
       State* next_state = state->next_state(action);
@@ -53,7 +53,6 @@ Move minimax::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions();
   
-  auto actions = state->legal_actions;
   int max_val = std::numeric_limits<int>::min();
   Move best_move;
 
